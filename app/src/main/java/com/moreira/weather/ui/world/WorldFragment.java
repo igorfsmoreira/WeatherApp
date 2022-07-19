@@ -62,16 +62,16 @@ public class WorldFragment extends Fragment implements RecyclerViewWorldAdapter.
             }
         });
 
+        initRecyclerView();
+
+        initViewModelObservers();
+
         double[] lastKnownLocation = getLastKnownLocation();
         if (lastKnownLocation != null) {
             mWorldViewModel.setCurrentLocation(lastKnownLocation[0], lastKnownLocation[1]);
         }
 
         mWorldViewModel.getDefaultLocationsData();
-
-        initRecyclerView();
-
-        initViewModelObservers();
 
         return mBinding.getRoot();
     }
@@ -99,7 +99,7 @@ public class WorldFragment extends Fragment implements RecyclerViewWorldAdapter.
     }
 
     private void initViewModelObservers() {
-        mWorldViewModel.getWeather().observe(getViewLifecycleOwner(), weathers -> {
+        mWorldViewModel.getLocationsWeatherList().observe(getViewLifecycleOwner(), weathers -> {
             updateRecyclerView(weathers);
         });
 

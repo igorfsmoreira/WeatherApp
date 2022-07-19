@@ -12,20 +12,32 @@ import java.util.ArrayList;
 
 public class WorldViewModel extends ViewModel implements Repository.OnDataUpdateListener {
 
+    private final String[][] DEFAULT_LOCATIONS = {
+            {"Lisbon", "PT"},
+            {"Madrid", "ES"},
+            {"Paris", "FR"},
+            {"Berlin", "DE"},
+            {"Copenhagen", "DK"},
+            {"Rome", "IT"},
+            {"London", "GB"},
+            {"Dublin", "IE"},
+            {"Prague", "CZ"},
+            {"Vienna", "AT"},
+    };
     private final Repository mRepository;
-    private MutableLiveData<ArrayList<WeatherResponse>> mWeather;
+    private MutableLiveData<ArrayList<WeatherResponse>> mLocationsWeatherList;
     private MutableLiveData<Double[]> mCurrentLocation;
     private MutableLiveData<WeatherResponse> mCurrentLocationWeather;
 
     public WorldViewModel() {
         mRepository = Repository.getInstance();
-        mWeather = new MutableLiveData<>(new ArrayList<>());
+        mLocationsWeatherList = new MutableLiveData<>(new ArrayList<>());
         mCurrentLocation = new MutableLiveData<>(new Double[]{1000.0, 1000.0});
         mCurrentLocationWeather = new MutableLiveData<>();
     }
 
-    public MutableLiveData<ArrayList<WeatherResponse>> getWeather() {
-        return mWeather;
+    public MutableLiveData<ArrayList<WeatherResponse>> getLocationsWeatherList() {
+        return mLocationsWeatherList;
     }
 
     public MutableLiveData<Double[]> getCurrentLocation() {
@@ -57,20 +69,7 @@ public class WorldViewModel extends ViewModel implements Repository.OnDataUpdate
     }
 
     public void getDefaultLocationsData() {
-        String[][] defaultLocations = {
-                {"Lisbon", "PT"},
-                {"Madrid", "ES"},
-                {"Paris", "FR"},
-                {"Berlin", "DE"},
-                {"Copenhagen", "DK"},
-                {"Rome", "IT"},
-                {"London", "GB"},
-                {"Dublin", "IE"},
-                {"Prague", "CZ"},
-                {"Vienna", "AT"},
-        };
-
-        mRepository.getDefaultLocationsData(defaultLocations);
+        mRepository.getDefaultLocationsData(DEFAULT_LOCATIONS);
     }
 
     @Override
@@ -85,23 +84,31 @@ public class WorldViewModel extends ViewModel implements Repository.OnDataUpdate
 
     @Override
     public void onWeatherResponse(WeatherResponse data) {
-        if (mCurrentLocation.getValue()[0] != data.getCoord().getLat() && mCurrentLocation.getValue()[1] != data.getCoord().getLon()) {
-            ArrayList<WeatherResponse> list = mWeather.getValue();
+        boolean isDefaultLocation = false;
+        for (String[] location : DEFAULT_LOCATIONS) {
+            if (data.getName().equals(location[0])) {
+                isDefaultLocation = true;
+                break;
+            }
+        }
 
-            boolean found = false;
+        if (isDefaultLocation) {
+            ArrayList<WeatherResponse> list = mLocationsWeatherList.getValue();
+
+            boolean exist = false;
             for (int i = 0; i < list.size(); i++) {
                 WeatherResponse element = list.get(i);
-                if (element.getCoord().getLat() == data.getCoord().getLat() && element.getCoord().getLon() == data.getCoord().getLon()) {
+                if (element.getId() == data.getId()) {
                     list.set(i, data);
-                    found = true;
+                    exist = true;
                     break;
                 }
             }
-            if (!found) {
+            if (!exist) {
                 list.add(data);
             }
 
-            mWeather.postValue(list);
+            mLocationsWeatherList.postValue(list);
         } else {
             mCurrentLocationWeather.postValue(data);
         }
