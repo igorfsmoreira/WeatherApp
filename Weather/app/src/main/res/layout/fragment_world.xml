@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="?attr/actionBarSize"
+    android:background="@color/blue"
+    android:orientation="vertical"
+    android:padding="12dp"
+    tools:context=".ui.world.WorldFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/world_card_view_current"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@color/blue_light"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/world_tv_local"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/world_tv_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/world_tv_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/world_iv_status"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center|end"
+                tools:ignore="ContentDescription" />
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp" />
+</LinearLayout>

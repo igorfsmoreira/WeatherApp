@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="title_home">Home</string>
+    <string name="title_world">World</string>
+
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="wind">Wind</string>
+    <string name="humidity">Humidity</string>
+    <string name="uvi">UVI</string>
+    <string name="pressure">Pressure</string>
+    <string name="hourly">Hourly</string>
+    <string name="daily">Daily</string>
+</resources>
